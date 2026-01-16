@@ -1,0 +1,150 @@
+{
+  "name": "codeforge-ai",
+  "displayName": "CodeForge AI",
+  "description": "All-in-one AI-powered code analyzer that fixes vulnerabilities, errors, and polishes your code to production quality",
+  "version": "1.0.0",
+  "publisher": "codeforge",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "security",
+    "code quality",
+    "vulnerability",
+    "fix",
+    "polish",
+    "analyzer"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codeforge.analyzeWorkspace",
+        "title": "CodeForge: Analyze Entire Workspace",
+        "icon": "$(search)"
+      },
+      {
+        "command": "codeforge.fixAll",
+        "title": "CodeForge: Fix All Issues",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "codeforge.openDashboard",
+        "title": "CodeForge: Open Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "codeforge.analyzeCurrentFile",
+        "title": "CodeForge: Analyze Current File",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "codeforge.setApiKey",
+        "title": "CodeForge: Set Gemini API Key"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codeforge-sidebar",
+          "title": "CodeForge AI",
+          "icon": "media/shield.svg"
+        }
+      ]
+    },
+    "views": {
+      "codeforge-sidebar": [
+        {
+          "type": "webview",
+          "id": "codeforge.dashboard",
+          "name": "Dashboard"
+        }
+      ]
+    },
+    "menus": {
+      "editor/title": [
+        {
+          "command": "codeforge.analyzeCurrentFile",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "codeforge.analyzeWorkspace",
+          "group": "codeforge"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "codeforge.analyzeWorkspace",
+        "key": "ctrl+shift+a",
+        "mac": "cmd+shift+a"
+      },
+      {
+        "command": "codeforge.fixAll",
+        "key": "ctrl+shift+f",
+        "mac": "cmd+shift+f"
+      }
+    ],
+    "configuration": {
+      "title": "CodeForge AI",
+      "properties": {
+        "codeforge.geminiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your Google Gemini API key for AI-powered analysis"
+        },
+        "codeforge.autoAnalyzeOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically analyze files when saved"
+        },
+        "codeforge.excludePatterns": {
+          "type": "array",
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**",
+            "**/dist/**",
+            "**/build/**",
+            "**/*.min.js"
+          ],
+          "description": "Glob patterns to exclude from analysis"
+        },
+        "codeforge.maxFilesToAnalyze": {
+          "type": "number",
+          "default": 100,
+          "description": "Maximum number of files to analyze at once"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.54.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.1.3"
+  }
+}
